@@ -12,9 +12,11 @@ graph TB
         Data["Raw Data"]
         I1[1.0] & I2[2.0] & I3[3.0] & I4[4.0]
         R["reshape(-1, 1)<br/>Stack into Tower"]
+        Tower["┌─────┐<br/>│ 1.0 │<br/>│ 2.0 │<br/>│ 3.0 │<br/>│ 4.0 │<br/>└─────┘"]
         
         Data --> I1 & I2 & I3 & I4
         I1 & I2 & I3 & I4 --> R
+        R --> Tower
     end
 
     subgraph Network["2️⃣ Neural Network 🤖"]
@@ -39,7 +41,7 @@ graph TB
 
     %% Connections with code alignment
     Data --> |"create_training_data()"| R
-    R --> |"tensor.reshape()"| Network
+    Tower --> |"tensor.reshape()"| Network
     Network --> |"model.forward()"| P
     T --> |"mse_loss()"| Loss
     P --> |"mse_loss()"| Loss
@@ -53,11 +55,13 @@ graph TB
     classDef learning fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000,rx:10px
     classDef save fill:#ffecb3,stroke:#ff8f00,stroke-width:2px,color:#000,rx:10px
     classDef data fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000,rx:10px
+    classDef tower fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px,color:#000,rx:0px,font-family:monospace
 
     class Data,I1,I2,I3,I4,R input
     class L1,G network
     class P,T,Loss,Back learning
     class S1,S2 save
+    class Tower tower
 ```
 
 ## Code Structure
