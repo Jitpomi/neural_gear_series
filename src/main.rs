@@ -4,11 +4,11 @@ use tch::nn::{Module, OptimizerConfig};
 fn main() {
     println!("\n1️⃣ Tensors: The Number Wizards 🧙‍♂️");
     let x = create_training_data();
-    println!("Training data (x): {:?}", x);
+    println!("\n2️⃣ Computational Graphs: AI's Map 🗺️");
+    // Create target data following y = 2x + 1 recipe
     let y = create_target_data(&x);
     println!("Target data (y): {:?}", y);
-
-    println!("\n2️⃣ Computational Graphs: AI's Map 🗺️");
+    // We build a linear model that can learn this recipe
     let mut model = build_model();
     let initial_pred = model.forward(&x);
     println!("Initial prediction: {:?}", initial_pred);
@@ -55,24 +55,31 @@ fn build_model() -> Model {
     Model { vs, linear }
 }
 
+
+/// Demonstrates how AI learns from mistakes using autograd
 /// Train the model using gradient descent
+/// The loss decreases over time, showing the model is learning
+/// After 500 epochs, the model has learned the pattern well
 fn train_model(model: &mut Model, x: &Tensor, y: &Tensor) {
     let learning_rate = 0.1;
+    // The learning rate determines how much the model updates its parameters during training.
     let mut opt = nn::Adam::default().build(&model.vs, learning_rate).unwrap();
-    
-    for epoch in 0..100 {
+
+    for epoch in 0..500 {
+        // Step 1: Model makes predictions based on current parameters
         let prediction = model.forward(x);
+        // Step 2: Calculate how far off the prediction is (loss)
         let loss = prediction.mse_loss(y, Reduction::Mean);
-        
+        // Step 3: Adjust the model parameters to reduce the error
         opt.backward_step(&loss);
-        
+
         if epoch % 20 == 0 {
             println!("Epoch {}: Loss = {:?}", epoch, loss.double_value(&[]));
         }
     }
     
     // Show final parameters
-    let mut vs_map = model.vs.variables();
+    let vs_map = model.vs.variables();
     if let Some(w) = vs_map.get("linear.weight") {
         println!("Final weight: {:?}", w.copy());
     }
