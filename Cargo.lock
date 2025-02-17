@@ -167,6 +167,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "double_plus_one_model"
+version = "0.1.0"
+dependencies = [
+ "tch",
+]
+
+[[package]]
 name = "flate2"
 version = "1.0.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -205,13 +212,6 @@ checksum = "6dd08c532ae367adf81c312a4580bc67f1d0fe8bc9c460520283f4c0ff277888"
 dependencies = [
  "cfg-if",
  "crunchy",
-]
-
-[[package]]
-name = "hello_tch"
-version = "0.1.0"
-dependencies = [
- "tch",
 ]
 
 [[package]]
