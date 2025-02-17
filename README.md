@@ -6,43 +6,53 @@ A simple yet powerful demonstration of neural network fundamentals using Rust an
 
 ```mermaid
 graph TB
-    subgraph Input[Training Data]
-        A1[1.0]
-        A2[2.0]
-        A3[3.0]
-        A4[4.0]
+    subgraph Training["1️⃣ Training Data Preparation"]
+        direction LR
+        I1[1.0] --> I2[2.0] --> I3[3.0] --> I4[4.0]
+        R["reshape(-1, 1)"]
     end
 
-    subgraph Network[Neural Network]
+    subgraph Network["2️⃣ Neural Network"]
         direction TB
-        M1[Linear Layer]
-        M2[Weight × Input + Bias]
+        L1["Linear Layer<br/>(weights + bias)"]
+        G["requires_grad_(true)<br/>Enable Learning"]
     end
 
-    subgraph Output[Results]
-        P[Prediction]
-        T[Target: input × 2 + 1]
-        L[Loss Function]
+    subgraph Learning["3️⃣ Learning Process"]
+        direction TB
+        P["Predictions"]
+        T["Targets (2x + 1)"]
+        Loss["MSE Loss"]
+        Back["Backward Pass<br/>Update Weights"]
     end
 
-    Input --> |Reshape to Tower| Network
-    Network --> |Forward Pass| P
-    T --> |Compare| L
-    P --> |Compare| L
-    L --> |Backward Pass| Network
-    Network --> |Update Weights| Network
+    subgraph Save["4️⃣ Model Save/Load"]
+        direction TB
+        S1["Save Model<br/>model.ot"]
+        S2["Load Model<br/>For Predictions"]
+    end
 
-    classDef input fill:#f9f,stroke:#333,stroke-width:2px
-    classDef network fill:#bbf,stroke:#333,stroke-width:2px,color:#000
-    classDef output fill:#dfd,stroke:#333,stroke-width:2px
-    classDef target fill:#f96,stroke:#333,stroke-width:2px
-    classDef loss fill:#ff9,stroke:#333,stroke-width:2px
+    %% Connections with code alignment
+    Training --> |"create_training_data()"| R
+    R --> |"tensor.reshape()"| Network
+    Network --> |"model.forward()"| P
+    T --> |"mse_loss()"| Loss
+    P --> |"mse_loss()"| Loss
+    Loss --> |"opt.backward_step()"| Back
+    Back --> |"500 epochs"| Network
+    Network --> |"save_model()"| Save
 
-    class A1,A2,A3,A4 input
-    class M1,M2 network
-    class P output
-    class T target
-    class L loss
+    %% Styling
+    classDef input fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px,color:#000
+    classDef network fill:#bbdefb,stroke:#1565c0,stroke-width:2px,color:#000
+    classDef learning fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef save fill:#ffecb3,stroke:#ff8f00,stroke-width:2px,color:#000
+    classDef data fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+
+    class I1,I2,I3,I4,R input
+    class L1,G network
+    class P,T,Loss,Back learning
+    class S1,S2 save
 ```
 
 ## What's Happening?
@@ -60,6 +70,30 @@ graph TB
    - Compares with correct answers
    - Updates its understanding
    - Repeats 500 times to get better!
+
+## Code Structure
+
+Our code follows the same four steps shown in the diagram:
+
+1. **Data Preparation** (`create_training_data`, `create_target_data`)
+   - Creates input tensor `[1.0, 2.0, 3.0, 4.0]`
+   - Reshapes into proper dimensions
+   - Enables gradient tracking
+
+2. **Neural Network** (`build_model`)
+   - Defines linear layer
+   - Sets up weights and biases
+   - Prepares for learning
+
+3. **Learning Process** (`train_model`)
+   - Makes predictions
+   - Calculates loss
+   - Updates weights
+   - Repeats for 500 epochs
+
+4. **Model Persistence** (`save_model`, `predict`)
+   - Saves trained model
+   - Loads for predictions
 
 ## Running the Project
 
