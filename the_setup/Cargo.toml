@@ -1,0 +1,9 @@
+[package]
+name = "the_setup"
+version = "0.1.0"
+edition = "2021"
+description = "Lesson 1 of The Neural Gear series: Setting up your Rust AI development environment"
+authors = ["The Neural Gear Team"]
+
+[dependencies]
+tch = { workspace = true }
