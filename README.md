@@ -5,19 +5,44 @@ A simple yet powerful demonstration of neural network fundamentals using Rust an
 ## Learning Process Visualization
 
 ```mermaid
-flowchart TD
-    A[Training Data] -->|1. Feed Forward| B[Neural Network]
-    B -->|2. Make Prediction| C[Predicted Output]
-    D[Expected Output] -->|3. Compare| E[Calculate Loss]
-    C -->|3. Compare| E
-    E -->|4. Backpropagate| B
-    B -->|5. Update Weights| B
-    
-    style A fill:#f9f,stroke:#333,stroke-width:4px
-    style B fill:#bbf,stroke:#333,stroke-width:4px
-    style C fill:#dfd,stroke:#333,stroke-width:4px
-    style D fill:#f96,stroke:#333,stroke-width:4px
-    style E fill:#ff9,stroke:#333,stroke-width:4px
+graph TB
+    subgraph Input[Training Data]
+        A1[1.0]
+        A2[2.0]
+        A3[3.0]
+        A4[4.0]
+    end
+
+    subgraph Network[Neural Network]
+        direction TB
+        M1[Linear Layer]
+        M2[Weight × Input + Bias]
+    end
+
+    subgraph Output[Results]
+        P[Prediction]
+        T[Target: input × 2 + 1]
+        L[Loss Function]
+    end
+
+    Input --> |Reshape to Tower| Network
+    Network --> |Forward Pass| P
+    T --> |Compare| L
+    P --> |Compare| L
+    L --> |Backward Pass| Network
+    Network --> |Update Weights| Network
+
+    classDef input fill:#f9f,stroke:#333,stroke-width:2px
+    classDef network fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    classDef output fill:#dfd,stroke:#333,stroke-width:2px
+    classDef target fill:#f96,stroke:#333,stroke-width:2px
+    classDef loss fill:#ff9,stroke:#333,stroke-width:2px
+
+    class A1,A2,A3,A4 input
+    class M1,M2 network
+    class P output
+    class T target
+    class L loss
 ```
 
 ## What's Happening?
