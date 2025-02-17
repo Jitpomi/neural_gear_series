@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "double_plus_one_model",
+    "double_plus_one_model", "the_setup",
 ]
 resolver = "2"
 
