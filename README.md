@@ -8,9 +8,13 @@ A simple yet powerful demonstration of neural network fundamentals using Rust an
 graph TB
     %% Define spaces for better layout
     subgraph Training["1️⃣ Training Data Preparation 📊"]
-        direction LR
-        I1[1.0] --> I2[2.0] --> I3[3.0] --> I4[4.0]
+        direction TB
+        Data["Raw Data"]
+        I1[1.0] & I2[2.0] & I3[3.0] & I4[4.0]
         R["reshape(-1, 1)<br/>Stack into Tower"]
+        
+        Data --> I1 & I2 & I3 & I4
+        I1 & I2 & I3 & I4 --> R
     end
 
     subgraph Network["2️⃣ Neural Network 🤖"]
@@ -34,7 +38,7 @@ graph TB
     end
 
     %% Connections with code alignment
-    Training --> |"create_training_data()"| R
+    Data --> |"create_training_data()"| R
     R --> |"tensor.reshape()"| Network
     Network --> |"model.forward()"| P
     T --> |"mse_loss()"| Loss
@@ -50,7 +54,7 @@ graph TB
     classDef save fill:#ffecb3,stroke:#ff8f00,stroke-width:2px,color:#000,rx:10px
     classDef data fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000,rx:10px
 
-    class I1,I2,I3,I4,R input
+    class Data,I1,I2,I3,I4,R input
     class L1,G network
     class P,T,Loss,Back learning
     class S1,S2 save
